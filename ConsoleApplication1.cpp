@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <streambuf>
 #include <ctime>
@@ -78,7 +78,7 @@ mass::mass(int _size) {
 	size = _size;
 	massad = new int[size];
 	for (int i = 0; i < size; i++) {
-		massad[i] = rand()%20;
+		massad[i] = rand()%10000;
 	}
 }
 
@@ -157,13 +157,13 @@ int main()
 {
 	srand(time(NULL));
 
-	const int _num = 1;
-	int x, y, o;
+	const int _num = 3;
+	int x, y, o,_size;
 
 	mass* wasd = new mass[_num];
 	mass();
-	
-	mass a1(input());
+	_size = input();
+	mass a1(_size);
 	a1.output();
 
 	for (int i = 0; i < _num; i++) {
@@ -258,17 +258,18 @@ int main()
 }
 
 int input() {
-	int i = 1, _int;
+	int i;
+	bool fail = true;
 	cout << "\nInput:";
-	while (i)
+	do
 	{
-		cin >> _int;
-		if (!cin) {
-			cout << "Davai vse po novoi\n";
-			rewind(stdin);
-			cin.clear();
-		}
-		else i = 0;
-	}
-	return _int;
+		cin >> i;
+		if (cin.fail() || cin.rdbuf()->in_avail() > 1)
+			cout << "\nError" << endl;
+		else
+			fail = false;
+		cin.clear();
+		cin.ignore(cin.rdbuf()->in_avail());
+	} while (fail);
+	return i;
 }
